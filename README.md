@@ -66,10 +66,10 @@ http://127.0.0.1:5000
 ```
 password-generator-flask/
 │
-├── app.py              # Основной файл приложения Flask
+├── app.py
 ├── templates/
-│   └── index.html      # HTML-шаблон с формой и результатами
-└── README.md           # Описание проекта
+│   └── index.html
+└── README.md
 ```
 
 ---
