@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Генератор паролей</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        .password {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #007bff;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор паролей</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label>Длина пароля:</label>
+                <input type="number" name="length" value="12" min="6" max="50">
+            </div>
+            <button type="submit">Сгенерировать 5 паролей</button>
+        </form>
+
+        {% if passwords %}
+        <div style="margin-top: 20px;">
+            <h3>Сгенерированные пароли:</h3>
+            {% for pwd in passwords %}
+            <div class="password">{{ pwd }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
