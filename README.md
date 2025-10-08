@@ -6,7 +6,8 @@
 ---
 
 ## **Скриншот интерфейса**
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/079db33c-4d20-430c-8dde-66f905f50562" />
+<img width="864" height="553" alt="image" src="https://github.com/user-attachments/assets/cd9c6df2-f184-4ba6-8481-5f795cb3ffce" />
+
 
 ---
 
