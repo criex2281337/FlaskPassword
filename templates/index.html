@@ -4,55 +4,128 @@
     <title>Генератор паролей</title>
     <style>
         body {
-            font-family: Arial;
-            max-width: 600px;
-            margin: 50px auto;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
         .container {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        h1 {
-            text-align: center;
-        }
-        .form-group {
-            margin: 15px 0;
-        }
-        input, button {
-            padding: 8px;
-            margin: 5px;
-        }
-        .password {
+            max-width: 800px;
+            margin: 0 auto;
             background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        h2 {
+            color: #333;
+            margin: 0;
+        }
+        .user-info {
+            color: #666;
+        }
+        .generator-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        input[type="number"] {
             padding: 10px;
-            margin: 5px 0;
-            border-left: 4px solid #007bff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #5a6fd8;
+        }
+        .passwords-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .passwords-list h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
             font-family: monospace;
+            font-size: 16px;
+        }
+        .logout {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .logout:hover {
+            background: #c0392b;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Генератор паролей</h1>
-        
-        <form method="POST">
-            <div class="form-group">
+        <div class="header">
+            <h2>Генератор паролей</h2>
+            <div class="user-info">Привет, {{ user }}!</div>
+        </div>
+
+        <div class="generator-form">
+            <form method="post">
                 <label>Длина пароля:</label>
-                <input type="number" name="length" value="12" min="6" max="50">
-            </div>
-            <button type="submit">Сгенерировать 5 паролей</button>
-        </form>
+                <input type="number" name="length" min="4" max="30" value="12">
+                <button type="submit">Сгенерировать пароли</button>
+            </form>
+        </div>
 
         {% if passwords %}
-        <div style="margin-top: 20px;">
+        <div class="passwords-list">
             <h3>Сгенерированные пароли:</h3>
-            {% for pwd in passwords %}
-            <div class="password">{{ pwd }}</div>
-            {% endfor %}
+            <ul>
+                {% for p in passwords %}
+                <li>{{ p }}</li>
+                {% endfor %}
+            </ul>
         </div>
         {% endif %}
+
     </div>
 </body>
 </html>
