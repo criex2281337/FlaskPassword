@@ -7,7 +7,8 @@
 
 ## **Скриншот главной страницы**
 <img width="864" height="553" alt="image" src="https://github.com/user-attachments/assets/cd9c6df2-f184-4ba6-8481-5f795cb3ffce" />
-**Скриншот страницы авторизации**
+
+## **Скриншот страницы авторизации**
 <img width="940" height="460" alt="image" src="https://github.com/user-attachments/assets/fbe06be4-8246-48b8-9e04-6a0cbb6d0ef0" />
 
 
