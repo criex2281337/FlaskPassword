@@ -1,58 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
     <title>Генератор паролей</title>
     <style>
         body {
-            font-family: Arial;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #7ed957, #3dbf87);
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
         }
+
         .container {
-            background: #f9f9f9;
-            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
             border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
-        h1 {
+
+        h2 {
+            color: #333;
+            margin-top: 0;
             text-align: center;
         }
-        .form-group {
-            margin: 15px 0;
+
+        form {
+            margin-bottom: 25px;
         }
-        input, button {
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
             padding: 8px;
-            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .password {
+
+        button {
+            background: #4a6cff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #3c5be8;
+        }
+
+        .password-list {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .password-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .password-list li {
             background: white;
+            margin: 6px 0;
             padding: 10px;
-            margin: 5px 0;
-            border-left: 4px solid #007bff;
+            border-radius: 6px;
             font-family: monospace;
+            border-left: 4px solid #4a6cff;
         }
+
+        .logout {
+            display: inline-block;
+            margin-top: 15px;
+            background: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .logout:hover {
+            background: #c0392b;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Генератор паролей</h1>
-        
-        <form method="POST">
-            <div class="form-group">
-                <label>Длина пароля:</label>
-                <input type="number" name="length" value="12" min="6" max="50">
-            </div>
-            <button type="submit">Сгенерировать 5 паролей</button>
-        </form>
+<div class="container">
+    <h2>Привет, {{ user }}!</h2>
 
-        {% if passwords %}
-        <div style="margin-top: 20px;">
-            <h3>Сгенерированные пароли:</h3>
-            {% for pwd in passwords %}
-            <div class="password">{{ pwd }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
+    <form method="post">
+        <label>Длина пароля:</label>
+        <input type="number" name="length" min="4" max="30" value="12" required>
+
+        <label>Сложность пароля:</label>
+        <select name="complexity">
+            <option value="simple">Простой</option>
+            <option value="medium" selected>Средний</option>
+            <option value="strong">Сложный</option>
+        </select>
+
+        <button type="submit" name="generate">Сгенерировать пароли</button>
+    </form>
+
+    {% if passwords %}
+    <div class="password-list">
+        <h3>Выберите пароль и введите сайт для сохранения:</h3>
+        <form method="post">
+            <ul>
+                {% for p in passwords %}
+                <li>
+                    <label><input type="radio" name="selected_password" value="{{ p }}" required> {{ p }}</label>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <label>Сайт:</label>
+            <input type="text" name="website" placeholder="example.com" required>
+
+            <button type="submit" name="save">Сохранить выбранный пароль</button>
+        </form>
     </div>
+    {% endif %}
+
+    {% if saved %}
+    <p class="success">Пароль успешно сохранён!</p>
+    {% endif %}
+
+    <a href="/logout" class="logout">Выйти</a>
+</div>
 </body>
 </html>
