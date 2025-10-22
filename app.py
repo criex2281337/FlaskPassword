@@ -9,6 +9,9 @@ app.secret_key = 'secret'
 USERS_FILE = 'users.txt'
 PASSWORDS_FILE = 'passwords.txt'
 
+# ────────────────────────────────
+# Работа с пользователями
+# ────────────────────────────────
 def load_users():
     users = {}
     if os.path.exists(USERS_FILE):
@@ -23,10 +26,28 @@ def save_user(name, password):
     with open(USERS_FILE, 'a') as f:
         f.write(f"{name} {password}\n")
 
-def save_password(name, website, password):
+# ────────────────────────────────
+# Работа с паролями
+# ────────────────────────────────
+def save_password(name, website, login, password):
     with open(PASSWORDS_FILE, 'a') as f:
-        f.write(f"{name} | {website} | {password}\n")
+        f.write(f"{name} | {website} | {login} | {password}\n")
 
+def load_passwords_for_user(name):
+    passwords = []
+    if os.path.exists(PASSWORDS_FILE):
+        with open(PASSWORDS_FILE, 'r') as f:
+            for line in f:
+                if line.strip():
+                    parts = line.strip().split(' | ')
+                    if len(parts) == 4 and parts[0] == name:
+                        _, website, login, password = parts
+                        passwords.append((website, login, password))
+    return passwords
+
+# ────────────────────────────────
+# Генерация паролей
+# ────────────────────────────────
 def generate_password(length, complexity):
     if complexity == 'simple':
         chars = string.ascii_letters + string.digits
@@ -34,9 +55,11 @@ def generate_password(length, complexity):
         chars = string.ascii_letters + string.digits + "!@#$%"
     else:
         chars = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?"
-
     return ''.join(random.choice(chars) for _ in range(length))
 
+# ────────────────────────────────
+# Роуты
+# ────────────────────────────────
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -70,22 +93,28 @@ def index():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    passwords = []
+    generated_passwords = []
+    saved = False
+
     if request.method == 'POST':
         if 'generate' in request.form:
             length = int(request.form.get('length', 12))
             complexity = request.form.get('complexity', 'medium')
-            passwords = [generate_password(length, complexity) for _ in range(5)]
-            return render_template('index.html', user=session['user'], passwords=passwords)
+            generated_passwords = [generate_password(length, complexity) for _ in range(5)]
 
-        if 'save' in request.form:
+        elif 'save' in request.form:
             password = request.form.get('selected_password')
             website = request.form.get('website')
-            if password and website:
-                save_password(session['user'], website, password)
-                return render_template('index.html', user=session['user'], saved=True)
+            login_name = request.form.get('login')
+            if password and website and login_name:
+                save_password(session['user'], website, login_name, password)
+                saved = True
 
-    return render_template('index.html', user=session['user'])
+    saved_passwords = load_passwords_for_user(session['user'])
+    return render_template('index.html',
+                           user=session['user'],passwords=generated_passwords,
+                           saved_passwords=saved_passwords,
+                           saved=saved)
 
 @app.route('/logout')
 def logout():
