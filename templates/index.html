@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Генератор паролей</title>
+    <title>Менеджер паролей</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
         }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -21,9 +21,8 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        h2 {
+        h2, h3 {
             color: #333;
-            margin-top: 0;
             text-align: center;
         }
 
@@ -62,19 +61,19 @@
             background: #3c5be8;
         }
 
-        .password-list {
+        .password-list, .saved-list {
             background: #f8f8f8;
             border-radius: 8px;
             padding: 20px;
             margin-top: 20px;
         }
 
-        .password-list ul {
+        .password-list ul, .saved-list ul {
             list-style: none;
             padding: 0;
         }
 
-        .password-list li {
+        .password-list li, .saved-list li {
             background: white;
             margin: 6px 0;
             padding: 10px;
@@ -103,13 +102,13 @@
             text-align: center;
             margin-top: 15px;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
     <h2>Привет, {{ user }}!</h2>
 
+    <!-- Генерация паролей -->
     <form method="post">
         <label>Длина пароля:</label>
         <input type="number" name="length" min="4" max="30" value="12" required>
@@ -126,7 +125,7 @@
 
     {% if passwords %}
     <div class="password-list">
-        <h3>Выберите пароль и введите сайт для сохранения:</h3>
+        <h3>Выберите пароль и сохраните его:</h3>
         <form method="post">
             <ul>
                 {% for p in passwords %}
@@ -139,13 +138,30 @@
             <label>Сайт:</label>
             <input type="text" name="website" placeholder="example.com" required>
 
-            <button type="submit" name="save">Сохранить выбранный пароль</button>
+            <label>Логин:</label>
+            <input type="text" name="login" placeholder="user@example.com" required>
+
+            <button type="submit" name="save">Сохранить пароль</button>
         </form>
     </div>
     {% endif %}
 
     {% if saved %}
     <p class="success">Пароль успешно сохранён!</p>
+    {% endif %}
+
+    {% if saved_passwords %}
+    <div class="saved-list">
+        <h3>Ваши сохранённые пароли:</h3>
+        <ul>
+            {% for site, login, pass in saved_passwords %}
+            <li><b>Сайт:</b> {{ site }} <br>
+                <b>Логин:</b> {{ login }} <br>
+                <b>Пароль:</b> {{ pass }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
 
     <a href="/logout" class="logout">Выйти</a>
